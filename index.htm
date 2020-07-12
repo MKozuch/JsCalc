@@ -1,0 +1,104 @@
+<html>
+
+<head>
+	<title>Hello, Calc!</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<style>
+		button {
+			touch-action: manipulation
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<div class="jumbotron">
+			<h1>Calc</h1>
+			<p>Test1</p>
+		</div>
+	</header>
+
+	<content>
+		<div class="container-fluid calc_container">
+			<div class="row">
+				<input id="display" type="number" class="form-control calc_display" placeholder="0" readonly value=0>
+			</div>
+			<div class="container-fluid calc_buttons_container">
+				
+				<div class="container-fluid calc_digits_container">
+					<div class="row">
+						<div class="col">
+							<div class="btn-group btn-group-lg btn-block">
+								<button type="button" class="btn btn-outline-primary calc_btn w-100" value=1>1</button>
+								<button type="button" class="btn btn-outline-primary calc_btn w-100" value=2>2</button>
+								<button type="button" class="btn btn-outline-primary calc_btn w-100" value=3>3</button>
+							</div>
+						</div>
+						<div class="w-100"></div>
+						<div class="col">
+							<div class="btn-group btn-group-lg btn-block">
+								<button type="button" class="btn btn-outline-primary calc_btn w-100" value=4>4</button>
+								<button type="button" class="btn btn-outline-primary calc_btn w-100" value=5>5</button>
+								<button type="button" class="btn btn-outline-primary calc_btn w-100" value=6>6</button>
+							</div>
+						</div>
+						<div class="w-100"></div>
+						<div class="col">
+							<div class="btn-group btn-group-lg btn-block">
+								<button type="button" class="btn btn-outline-primary calc_btn w-100" value=7>7</button>
+								<button type="button" class="btn btn-outline-primary calc_btn w-100" value=8>8</button>
+								<button type="button" class="btn btn-outline-primary calc_btn w-100" value=9>9</button>
+							</div>
+						</div>
+						<div class="w-100"></div>
+						<div class="col">
+							<div class="btn-group btn-group-lg btn-block">
+								<button type="button" class="btn btn-outline-primary calc_btn w-100" value=0>0</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+	</content>
+</body>
+
+<script>
+	class Calculator {
+		constructor(disp) {
+			this.buffer = [];
+			this.display = disp;
+		}
+
+		buttonPressed(val) {
+			this.buffer.push(val);
+			var e = new CustomEvent("calc-display", {bubbles: true});
+			display.dispatchEvent(e);
+		}
+		
+		displayBuffer(){
+			return this.buffer.join("");
+		}
+	}
+
+	const calculator = new Calculator(display);
+	Object.freeze(calculator);
+
+	document.querySelectorAll(".calc_btn").forEach(item => {
+		item.addEventListener("click", event => {
+			calculator.buttonPressed(item.value);
+		});
+	});
+
+	display.addEventListener("calc-display", function(e) {
+		this.value = calculator.displayBuffer();
+	});
+	
+</script>
+
+</html>
